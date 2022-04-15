@@ -1,0 +1,17 @@
+
+pip install -U pip setuptools wheel
+pip install -U spacy
+python -m spacy download en_core_web_sm
+python -m spacy download en_core_web_lg
+
+pip uninstall h5py
+pip install h5py
+
+#pip install neuralcoref
+#conda install coreferee
+
+#pip install enchant
+#pip install compound-word-splitter
+
+pip install wordninja
+
