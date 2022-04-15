@@ -9,6 +9,7 @@ nlp = spacy.load("en_core_web_lg")
 
 DATASET_PATH = 'Read_The_Web_NELL.08m.1102_dataset.csv'
 CLUSTER_MODEL_PATH = 'kmeans_model.pkl'
+NUM_CLUSTERS = 50
 
 def split_compound_word(word):
     resList = wordninja.split(word)
@@ -53,7 +54,7 @@ def create_cluster_model(dataset_path = DATASET_PATH):
     result = combine_entity_and_values(lst)
 
     docs = [nlp(text) for text in result]
-    cluster_model = KMeans(n_clusters=10, random_state=0).fit(docs)
+    cluster_model = KMeans(n_clusters=NUM_CLUSTERS, random_state=0).fit(docs)
     pickle.dump(cluster_model, open(CLUSTER_MODEL_PATH, "wb"))
     return cluster_model
 
@@ -61,6 +62,14 @@ def get_cluster_memberships(X_input):
     model = get_cluster_model()
     y_pred = model.predict(X_input)
     return y_pred
+
+
+def get_cluster_elements(cluster_id):
+    cluster_elements = []
+    ##
+    return cluster_elements
+
+
 
 if '__name__' == '__main__':
     create_cluster_model(DATASET_PATH)
