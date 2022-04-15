@@ -64,12 +64,16 @@ def get_cluster_memberships(X_input):
     y_pred = model.predict(X_input)
     return y_pred
 
-
 def get_cluster_elements(cluster_id):
     cluster_elements = []
     ##
     return cluster_elements
 
+def get_random_item_from_cluster(cluster_id):
+    item = ''
+    # get list of elements belonging to the cluster ID
+    # use random function to pick one random element and return
+    return item
 
 
 if '__name__' == '__main__':
