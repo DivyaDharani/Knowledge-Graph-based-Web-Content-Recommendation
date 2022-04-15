@@ -54,7 +54,8 @@ def create_cluster_model(dataset_path = DATASET_PATH):
     result = combine_entity_and_values(lst)
 
     docs = [nlp(text) for text in result]
-    cluster_model = KMeans(n_clusters=NUM_CLUSTERS, random_state=0).fit(docs)
+    vectors = [doc.vector for doc in docs]
+    cluster_model = KMeans(n_clusters=NUM_CLUSTERS, random_state=0).fit(vectors)
     pickle.dump(cluster_model, open(CLUSTER_MODEL_PATH, "wb"))
     return cluster_model
 
