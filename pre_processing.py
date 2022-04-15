@@ -29,6 +29,11 @@ def get_cluster_model(dataset_path = DATASET_PATH):
 def create_cluster_model(dataset_path = DATASET_PATH):
     get_cluster_model(dataset_path)
 
+def get_cluster_memberships(X_input):
+    model = get_cluster_model()
+    y_pred = model.predict(X_input)
+    return y_pred
+
 if '__name__' == '__main__':
     create_cluster_model(DATASET_PATH)
 
