@@ -8,7 +8,6 @@ from sklearn.cluster import KMeans
 nlp = spacy.load("en_core_web_lg")
 
 DATASET_PATH = 'Read_The_Web_NELL.08m.1102_dataset.csv'
-
 CLUSTER_MODEL_PATH = 'kmeans_model.pkl'
 
 def split_compound_word(word):
@@ -22,7 +21,6 @@ def split_value(df):
         entity = split_compound_word(row['Entity'])
         value = split_compound_word(row['Value'])
         entry = [entity, value]
-        print(entry)
         lst.append(entry)
     return lst
 
@@ -55,8 +53,6 @@ def create_cluster_model(dataset_path = DATASET_PATH):
     result = combine_entity_and_values(lst)
 
     docs = [nlp(text) for text in result]
-    for doc in docs:
-        print(doc.vector)
     cluster_model = KMeans(n_clusters=10, random_state=0).fit(docs)
     pickle.dump(cluster_model, open(CLUSTER_MODEL_PATH, "wb"))
     return cluster_model
