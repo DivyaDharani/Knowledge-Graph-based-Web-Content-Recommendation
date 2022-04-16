@@ -53,7 +53,7 @@ def get_cluster_model(dataset_path=DATASET_PATH, cluster_model=saved_cluster_mod
     #store the cluster model
     #return cluster_model
 
-def get_dataset(dataset_path, dataset= saved_dataset):
+def get_dataset(dataset_path=DATASET_PATH, dataset= saved_dataset):
     if dataset is not None:
         return dataset
     saved_dataset = pd.read_csv(dataset_path)
@@ -82,7 +82,8 @@ def get_cluster_elements(cluster_id):
     cluster_map['data_index'] = dataset.index.values
     cluster_map['cluster'] = model.labels_
     cluster_elements = cluster_map[cluster_map.cluster == cluster_id]
-    return cluster_elements
+    result = dataset.loc[cluster_elements.data_index, :]
+    return result
 
 def get_random_item_from_cluster(cluster_id):
     cluster_elements = get_cluster_elements(cluster_id)
@@ -94,5 +95,6 @@ def get_random_item_from_cluster(cluster_id):
 if __name__ == '__main__':
     print('hi')
     create_cluster_model(DATASET_PATH)
+    print(get_cluster_elements(49))
     print('bye')
 
