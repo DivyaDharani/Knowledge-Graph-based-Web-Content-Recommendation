@@ -1,8 +1,9 @@
 import spacy
-import pre_processing
 from nlp_tasks import get_entities
 from collections import Counter
 
+#project module imports:
+from clustering import get_cluster_memberships
 
 nlp = spacy.load("en_core_web_lg")
 
@@ -12,7 +13,7 @@ def recommend_web_articles(sents):
     entities_joined = [' '.join(ent_list) for ent_list in entities]
     docs = [nlp(ent) for ent in entities_joined]
     vectors = [doc.vector for doc in docs]
-    cluster_memberships = pre_processing.get_cluster_memberships(vectors)
+    cluster_memberships = get_cluster_memberships(vectors)
     membership_counts = Counter(cluster_memberships)
 
     #To do further:
