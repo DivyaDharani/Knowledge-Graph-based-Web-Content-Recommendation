@@ -83,3 +83,8 @@ def get_random_item_from_cluster(cluster_id):
 
 if __name__ == '__main__':
     create_cluster_model(DATASET_PATH)
+
+
+#To do:
+#get_random_item_from_cluster should return 'entity value' as string
+#decide how many clusters should be formed based on analysing the dataset manually (and based on how the recommendations come out to be)
