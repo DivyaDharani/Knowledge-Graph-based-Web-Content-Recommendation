@@ -12,6 +12,7 @@ CLUSTER_MODEL_PATH = 'kmeans_model.pkl'
 NUM_CLUSTERS = 50
 
 saved_cluster_model = None
+saved_dataset = None
 
 def split_compound_word(word):
     resList = wordninja.split(word)
@@ -52,8 +53,14 @@ def get_cluster_model(dataset_path=DATASET_PATH, cluster_model=saved_cluster_mod
     #store the cluster model
     #return cluster_model
 
+def get_dataset(dataset_path, dataset= saved_dataset):
+    if dataset is not None:
+        return dataset
+    saved_dataset = pd.read_csv(dataset_path)
+    return saved_dataset
+
 def create_cluster_model(dataset_path = DATASET_PATH):
-    file = pd.read_csv(dataset_path)
+    file = get_dataset(dataset_path)
     lst = split_value(file)
     result = combine_entity_and_values(lst)
     print(result)
@@ -70,8 +77,11 @@ def get_cluster_memberships(X_input):
 
 def get_cluster_elements(cluster_id):
     model = get_cluster_model()
-    cluster_elements = []
-    ##
+    dataset = get_dataset()
+    cluster_map = pd.DataFrame()
+    cluster_map['data_index'] = dataset.index.values
+    cluster_map['cluster'] = model.labels_
+    cluster_elements = cluster_map[cluster_map.cluster == cluster_id]
     return cluster_elements
 
 def get_random_item_from_cluster(cluster_id):
