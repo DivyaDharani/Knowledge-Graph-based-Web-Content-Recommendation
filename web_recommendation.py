@@ -1,6 +1,8 @@
 import spacy
 import pre_processing
 from nlp_tasks import get_entities
+from collections import Counter
+
 
 nlp = spacy.load("en_core_web_lg")
 
@@ -11,10 +13,8 @@ def recommend_web_articles(sents):
     docs = [nlp(ent) for ent in entities_joined]
     vectors = [doc.vector for doc in docs]
     cluster_memberships = pre_processing.get_cluster_memberships(vectors)
+    membership_counts = Counter(cluster_memberships)
 
-
-
-
-#To do:
-#Change pre_processing file name
-#Include cache for cluster model in get_cluster_model method
+    #To do further:
+    #sort the membership counts based on the count in descending order
+    #then add recommendation logic (using get_random item from cluster) - the logic should decide how many items to pick from which clusters
