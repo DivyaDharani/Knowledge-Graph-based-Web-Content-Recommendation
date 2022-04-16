@@ -42,16 +42,8 @@ def get_cluster_model(dataset_path=DATASET_PATH, cluster_model=saved_cluster_mod
         saved_cluster_model = pickle.load(open(CLUSTER_MODEL_PATH, "rb"))
         return saved_cluster_model
 
-
-    #otherwise
-    #read the dataset, clean the data, create cluster model, and dump in the cluster model path
-
     saved_cluster_model = create_cluster_model(dataset_path)
     return saved_cluster_model
-
-    #cluster_model =
-    #store the cluster model
-    #return cluster_model
 
 def get_dataset(dataset_path=DATASET_PATH, dataset= saved_dataset):
     if dataset is not None:
@@ -63,7 +55,6 @@ def create_cluster_model(dataset_path = DATASET_PATH):
     file = get_dataset(dataset_path)
     lst = split_value(file)
     result = combine_entity_and_values(lst)
-    print(result)
     docs = [nlp(text) for text in result]
     vectors = [doc.vector for doc in docs]
     cluster_model = KMeans(n_clusters=NUM_CLUSTERS, random_state=0).fit(vectors)
@@ -87,14 +78,8 @@ def get_cluster_elements(cluster_id):
 
 def get_random_item_from_cluster(cluster_id):
     cluster_elements = get_cluster_elements(cluster_id)
-    # get list of elements belonging to the cluster ID
-    # use random function to pick one random element and return
     return cluster_elements.sample()
 
 
 if __name__ == '__main__':
-    print('hi')
     create_cluster_model(DATASET_PATH)
-    print(get_cluster_elements(49))
-    print('bye')
-
