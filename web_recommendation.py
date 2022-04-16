@@ -19,3 +19,6 @@ def recommend_web_articles(sents):
     #To do further:
     #sort the membership counts based on the count in descending order
     #then add recommendation logic (using get_random item from cluster) - the logic should decide how many items to pick from which clusters
+
+    #tailor recommendations based on the feedback that users give
+    #get users' preferred categories and recommend based on that
