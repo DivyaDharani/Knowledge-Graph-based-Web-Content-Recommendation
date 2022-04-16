@@ -85,10 +85,10 @@ def get_cluster_elements(cluster_id):
     return cluster_elements
 
 def get_random_item_from_cluster(cluster_id):
-    item = ''
+    cluster_elements = get_cluster_elements(cluster_id)
     # get list of elements belonging to the cluster ID
     # use random function to pick one random element and return
-    return item
+    return cluster_elements.sample()
 
 
 if __name__ == '__main__':
