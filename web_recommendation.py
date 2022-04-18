@@ -5,7 +5,7 @@ from collections import Counter
 #project module imports:
 from clustering import get_cluster_memberships
 
-nlp = spacy.load("en_core_web_lg")
+nlp = spacy.load("en_core_web_sm")
 
 def recommend_web_articles(sents):
     docs = [nlp(sent) for sent in sents]
