@@ -5,7 +5,7 @@ import wordninja
 import spacy
 from sklearn.cluster import KMeans
 
-nlp = spacy.load("en_core_web_lg")
+nlp = spacy.load("en_core_web_sm")
 
 DATASET_PATH = 'Read_The_Web_NELL.08m.1102_dataset.csv'
 CLUSTER_MODEL_PATH = 'kmeans_model.pkl'
