@@ -3,7 +3,7 @@ from spacy.matcher import Matcher
 from spacy import displacy
 import neuralcoref
 
-nlp = spacy.load("en_core_web_lg")
+nlp = spacy.load("en_core_web_sm")
 neuralcoref.add_to_pipe(nlp)
 
 def get_subjects_and_objects(doc):
@@ -86,17 +86,20 @@ def get_relation(doc):
             {'DEP':'agent','OP':"?"}, #eg. He was beaten 'by' his friends
             {'POS':'ADJ','OP':"?"}]
 
-  #matcher.add("matching_1", None, pattern)
-  matcher.add('rule1', [pattern])
+  #spacy v2.1.0
+  matcher.add("rule1", None, pattern)
+  #spacy later versions
+  #matcher.add('rule1', [pattern])
 
   matches = matcher(doc)
 
   k = len(matches) - 1
   #print(matches, matches[k][1], matches[k][2], doc[matches[k][1]: matches[k][2]])
+  if k >= 0:
+    span = doc[matches[k][1]:matches[k][2]]
+    return(span.text)
 
-  span = doc[matches[k][1]:matches[k][2]]
-
-  return(span.text)
+  return ''
 
 def print_pos_and_dep(doc):
     for token in doc:
