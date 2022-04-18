@@ -2,7 +2,8 @@
 pip install -U pip setuptools wheel
 pip install -U spacy==2.1.0
 
-python -m spacy download en_core_web_lg
+python -m spacy download en_core_web_sm
+#python -m spacy download en_core_web_lg
 
 pip uninstall h5py
 pip install h5py
@@ -11,7 +12,3 @@ pip install neuralcoref
 
 pip install wordninja
 
-
-
-
-#python -m spacy download en_core_web_sm
