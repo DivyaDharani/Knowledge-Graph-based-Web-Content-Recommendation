@@ -24,5 +24,3 @@ def construct_knowledge_graph(texts):
 
     knowledge_graph_df = pd.DataFrame(knowledge_graph_dict_list)
     return knowledge_graph_df
-
-#Call get knowledge graph method and use entities from there in the recommendation part
