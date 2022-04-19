@@ -1,10 +1,9 @@
 import spacy
-from nlp_tasks import get_entities
 from collections import Counter
-from knowledge_graph import construct_knowledge_graph
 
 #project module imports:
 from clustering import get_cluster_memberships
+from knowledge_graph import construct_knowledge_graph
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -24,7 +23,7 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
         vectors = [doc.vector for doc in docs]
         cluster_memberships = get_cluster_memberships(vectors)
         membership_counts = Counter(cluster_memberships)
-        
+
         #To do further:
         #sort the membership counts based on the count in descending order
         #then add recommendation logic (using get_random item from cluster) - the logic should decide how many items to pick from which clusters
