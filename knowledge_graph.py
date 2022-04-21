@@ -20,7 +20,8 @@ def construct_knowledge_graph(texts):
         entities = mynlp.get_entities(doc)
         if all([not (item is None or item.strip() == '') for item in [main_subj, relation, main_obj]]):
             knowledge_graph_dict_list.append(
-                {'Entity': main_subj, 'Relation': relation, 'Value': main_obj, 'Entity List': entities})
+                {'Entity': main_subj, 'Relation': relation, 'Value': main_obj, 'Entity List': entities, 'Text Used': doc.text})
 
     knowledge_graph_df = pd.DataFrame(knowledge_graph_dict_list)
+    
     return knowledge_graph_df
