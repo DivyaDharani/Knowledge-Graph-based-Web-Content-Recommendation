@@ -23,15 +23,16 @@ def split_value(df):
     lst = []
     for index, row in df.iterrows():
         entity = split_compound_word(row['Entity'])
+        relation = split_compound_word(row['Relation'])
         value = split_compound_word(row['Value'])
-        entry = [entity, value]
+        entry = [entity, relation, value]
         lst.append(entry)
     return lst
 
 def combine_entity_and_values(lst):
     result = []
     for row in lst:
-        result.append(row[0]+' '+row[1])
+        result.append(' '.join(row))
     return result
 
 def get_cluster_model(dataset_path=DATASET_PATH, cluster_model=saved_cluster_model):
@@ -49,6 +50,8 @@ def get_dataset(dataset_path=DATASET_PATH, dataset= saved_dataset):
     if dataset is not None:
         return dataset
     saved_dataset = pd.read_csv(dataset_path)
+    saved_dataset = saved_dataset[saved_dataset.Relation != 'generalizations']
+    saved_dataset = saved_dataset[saved_dataset.Relation != 'haswikipediaurl']
     return saved_dataset
 
 def create_cluster_model(dataset_path = DATASET_PATH):
