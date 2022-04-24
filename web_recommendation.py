@@ -16,9 +16,7 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
         if user_knowledge_graph_df is None:
             user_knowledge_graph_df = construct_knowledge_graph(texts)
 
-        print(user_knowledge_graph_df, user_knowledge_graph_df['Entity List'])
-
-        entities = list(user_knowledge_graph_df['Entity List'])
+        entities = list(user_knowledge_graph_df['Subjects and Objects'])
         entities_joined = []
         for ent_list in entities:
             if len(ent_list) > 0:
@@ -32,16 +30,9 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
             cluster_memberships = get_cluster_memberships(vectors)
             membership_counts = Counter(cluster_memberships)
 
-        #To do further:
-        #sort the membership counts based on the count in descending order
-        #then add recommendation logic (using get_random item from cluster) - the logic should decide how many items to pick from which clusters
-
-        #tailor recommendations based on the feedback that users give
-        #get users' preferred categories and recommend based on that
-            return membership_counts, cluster_memberships
-
     except Exception as e:
         print("Error occurred in the recommend_web_articles method: ", e, traceback.print_exc())
+
     recommendation_result = ["recommendation_link1", "recommendation_link2", "recommendation_link3"]
 
     return recommendation_result
