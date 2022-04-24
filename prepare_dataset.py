@@ -24,6 +24,8 @@ def extract_entities_and_types(df, start_index, batch_size):
     end_index = min(start_index + batch_size, len(df))
     print(f'starting with index {start_index} and end index {end_index}')
     for i in range (start_index, end_index):
+        if i % 100 == 0:
+            print(f'--{i}--')
         row = df.iloc[i]
         entity_value = query_wikidata(row['WikiID'])
         if entity_value is not None and entity_value != '':
