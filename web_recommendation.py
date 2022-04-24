@@ -37,17 +37,13 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
 
     return recommendation_result
 
-
-sample_texts = ["An earthquake is the ground shaking caused by a sudden slip on a fault.",
-"The stock market broadly refers to the collection of exchanges and other venues where the buying, selling, and issuance of shares of publicly held companies take place. ",
-"A mutual fund is a company that pools money from many investors and invests the money in securities such as stocks, bonds, and short-term debt.",
-"Warren Edward Buffett is an American business magnate, investor, and philanthropist."]
-
+# sample_texts = ["An earthquake is the ground shaking caused by a sudden slip on a fault.",
+# "The stock market broadly refers to the collection of exchanges and other venues where the buying, selling, and issuance of shares of publicly held companies take place. ",
+# "A mutual fund is a company that pools money from many investors and invests the money in securities such as stocks, bonds, and short-term debt.",
+# "Warren Edward Buffett is an American business magnate, investor, and philanthropist."]
 
 def get_recommendations(links):
     texts = extract_text(links)
     print(texts)
-    #texts = []
     recommended_links = recommend_web_articles(texts)
-    #recommended_links = ["recommendation_link1", "recommendation_link2", "recommendation_link3"]
     return recommended_links
