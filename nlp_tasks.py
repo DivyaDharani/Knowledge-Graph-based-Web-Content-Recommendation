@@ -5,6 +5,7 @@ import neuralcoref
 
 nlp = spacy.load("en_core_web_sm")
 neuralcoref.add_to_pipe(nlp)
+all_stop_words = nlp.Defaults.stop_words
 
 def get_subjects_and_objects(doc):
     subjects = []
@@ -26,6 +27,9 @@ def get_subjects_and_objects(doc):
         # if token is a punctuation mark then move on to the next token
         if tok.dep_ == "punct":
             continue
+
+        if tok.dep_ == "pron":
+            print(tok.text, "pronoun")
 
         # check: token is a compound word or not
         if tok.dep_ == "compound":
@@ -141,21 +145,37 @@ def coref_resolution(text):
 
     return "".join(tok_list)
 
+def remove_stop_words(text):
+    doc = nlp(text)
+    words_without_stop_words = [token.text for token in doc if not token.text.lower() in all_stop_words]
+    final_text = ' '.join(words_without_stop_words)
+    return final_text
+
 if __name__ == '__main__':
 
-    text = "President Biden is escalating the pressure on Vladimir Putin, targeting the Russian leader, his family and his inner circle with words and actions. The Biden administration has sanctioned Putin himself, his daughters and several of his personal friends and top aides in a bid to squeeze the Russian leader over his country’s invasion of Ukraine. Biden also has stepped up his rhetoric with Putin, calling him a war criminal, saying he cannot remain in power and most recently describing his actions as genocide on Tuesday."
+    sentences = ['An introduction to the (possible) future of data science.',
+    'The Earth is getting warmer, and humans are the cause. This is why.',
+    'Read writing about Black Holes in Starts With A Bang!. The Universe is out there, waiting for you to discover it.',
+    'A cryptocurrency is a digital or virtual currency that uses cryptography and is difficult to counterfeit.',
+    'Read writing about Python in Towards Data Science. Your home for data science. A Medium publication sharing concepts, ideas and codes.']
     #sentences = get_sentences(text)
-    #for sentence in sentences:
-    sentence = text
-    #print('------ ', sentence)
-    doc = nlp(sentence)
-    subjects, objects, main_subj, main_obj = get_subjects_and_objects(doc)
-    relation = get_relation(doc)
+    for sentence in sentences:
+        #print('------ ', sentence)
+        doc = nlp(coref_resolution(sentence))
+        #print_pos_and_dep(doc)
+        subjects, objects, main_subj, main_obj = get_subjects_and_objects(doc)
+        relation = get_relation(doc)
 
 
-    print(subjects, objects)
-    print(main_subj, '--', relation, '--', main_obj)
-    print(get_entities(doc))
-    print('Noun Chunks => ', get_noun_chunks(doc))
+        #print(subjects, objects)
+        #print(main_subj, '--', relation, '--', main_obj)
+        #print(get_entities(doc))
+
+        subjobj = subjects + objects
+        print(subjobj)
+        txt = ' '.join(subjobj)
+        print(remove_stop_words(txt))
+
+
 
 
