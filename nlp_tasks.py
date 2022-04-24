@@ -2,6 +2,7 @@ import spacy
 from spacy.matcher import Matcher
 from spacy import displacy
 import neuralcoref
+import wordninja
 
 nlp = spacy.load("en_core_web_sm")
 neuralcoref.add_to_pipe(nlp)
@@ -125,6 +126,11 @@ def get_sentences(text):
 
 def get_noun_chunks(doc):
     return list(doc.noun_chunks)
+
+def split_compound_word(word):
+    resList = wordninja.split(word)
+    word = ' '.join(resList)
+    return word
 
 def coref_resolution(text):
     """Function that executes coreference resolution on a given text"""
