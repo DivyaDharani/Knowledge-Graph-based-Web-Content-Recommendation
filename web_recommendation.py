@@ -6,6 +6,7 @@ from mining import extract_text
 #project module imports:
 from clustering import get_cluster_memberships
 from knowledge_graph import construct_knowledge_graph
+import nlp_tasks as mynlp
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -21,7 +22,10 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
         entities_joined = []
         for ent_list in entities:
             if len(ent_list) > 0:
-                entities_joined.append(' '.join(ent_list))
+                txt = ' '.join(ent_list)
+                txt = mynlp.remove_stop_words(txt)
+                entities_joined.append(txt)
+
         docs = [nlp(ent) for ent in entities_joined]
         vectors = [doc.vector for doc in docs]
         if len(vectors) > 0:
