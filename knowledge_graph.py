@@ -18,10 +18,11 @@ def construct_knowledge_graph(texts):
         subjects, objects, main_subj, main_obj = mynlp.get_subjects_and_objects(doc)
         relation = mynlp.get_relation(doc)
         entities = mynlp.get_entities(doc)
+        subjects_and_objects = subjects + objects
         #if all([not (item is None or item.strip() == '') for item in [main_subj, relation, main_obj]]):
         knowledge_graph_dict_list.append(
                 {'Entity': main_subj, 'Relation': relation, 'Value': main_obj,
-                 'Entity List': entities, 'Text Used': doc.text})
+                 'Entity List': entities, 'Subjects and Objects': subjects_and_objects, 'Text Used': doc.text})
 
     knowledge_graph_df = pd.DataFrame(knowledge_graph_dict_list)
     return knowledge_graph_df
