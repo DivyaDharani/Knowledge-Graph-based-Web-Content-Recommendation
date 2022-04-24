@@ -14,3 +14,11 @@ First few lines present in the dataset downloaded (Original file around 600 MB):
 <http://wikidata.dbpedia.org/resource/Q10000121> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Person> .
 <http://wikidata.dbpedia.org/resource/Q1000012> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/RailwayStation> .
 <http://wikidata.dbpedia.org/resource/Q10000136> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Museum> .
+
+
+Regex used to select and remove text - to keep only the wiki IDs and their types:
+<http://www.*#type>
+<http://dbpedia.org/ontology/
+<http://wikidata.dbpedia.org/resource/
+>
+ \.
