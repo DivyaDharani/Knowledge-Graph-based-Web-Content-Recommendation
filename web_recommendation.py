@@ -22,9 +22,9 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
         entities_joined = []
         for ent_list in entities:
             if len(ent_list) > 0:
-                txt = ' '.join(ent_list)
-                txt = mynlp.remove_stop_words(txt)
-                entities_joined.append(txt)
+                txt = mynlp.remove_stop_words(' '.join(ent_list))
+                if len(txt) > 0:
+                    entities_joined.append(txt)
 
         docs = [nlp(ent) for ent in entities_joined]
         vectors = [doc.vector for doc in docs]
