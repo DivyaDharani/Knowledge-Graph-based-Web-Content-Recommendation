@@ -23,5 +23,6 @@ def request_recommendation(links):
     return links_recommended
 
 
-request_links = ["https://www.investopedia.com/terms/c/cryptocurrency.asp"]
+request_links = ['https://www.investopedia.com/terms/c/cryptocurrency.asp', 'https://en.wikipedia.org/wiki/Lionel_Messi', 'https://en.wikipedia.org/wiki/Elon_Musk', 'https://en.wikipedia.org/wiki/Barack_Obama', 'https://en.wikipedia.org/wiki/Ukraine', 'https://en.wikipedia.org/wiki/Pacific_Ocean']
+
 print(request_recommendation(request_links))
