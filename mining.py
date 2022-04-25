@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from scrape_wiki import search_wiki
 
+"""
 def get_keyword(url):
     # Check the schema
     if "https://" not in url and "http://" not in url:
@@ -27,6 +29,27 @@ def get_keyword(url):
         return result
     result["h1_tag"] = None
     result["description"] = description
+    return result"""
+
+def get_keyword(url):
+    # Check if wiki
+    if "wikipedia" in url:
+        wiki_result = search_wiki(url) if search_wiki(url) else "Wiki error"
+        return wiki_result
+    # Check the schema
+    if "https://" not in url and "http://" not in url:
+        url = "https://" + url
+    # Start the request
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    description = soup.find("meta", property="og:description")
+    description = description["content"] if description else "No meta url given"
+    # Get the p tag
+    h1_tag = soup.find("h1")
+    h1_tag = h1_tag.text
+    # Construct result
+    result = description if description else h1_tag
+    print(result)
     return result
 
 
@@ -34,9 +57,11 @@ def extract_text(links):
     sentence_list = []
     for link in links:
         result = get_keyword(link)
-        if result["description"] is not None:
+        """if result["description"] is not None:
             sentence_list.append(result["description"])
         elif result["h1_tag"] is not None:
-            sentence_list.append(result["h1_tag"])
+            sentence_list.append(result["h1_tag"])"""
+        if result is not None and result != 'Wiki error' and result != 'No meta url given':
+            sentence_list.append(result)
     return sentence_list
 
