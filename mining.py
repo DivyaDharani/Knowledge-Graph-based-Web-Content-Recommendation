@@ -46,7 +46,8 @@ def get_keyword(url):
     description = description["content"] if description else "No meta url given"
     # Get the p tag
     h1_tag = soup.find("h1")
-    h1_tag = h1_tag.text
+    if h1_tag is not None:
+        h1_tag = h1_tag.text
     # Construct result
     result = description if description else h1_tag
     print(result)
