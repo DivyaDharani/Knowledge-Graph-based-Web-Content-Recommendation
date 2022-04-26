@@ -8,7 +8,7 @@ from clustering import get_cluster_memberships, get_dataset
 from knowledge_graph import construct_knowledge_graph
 import nlp_tasks as mynlp
 
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_lg")
 
 TOP_CATEG_COUNT = 3
 
