@@ -12,7 +12,7 @@ nlp = spacy.load("en_core_web_lg")
 #TOP_CATEG_COUNT = 3
 
 def recommend_web_articles(texts, user_knowledge_graph_df = None):
-    recommendation_result = None
+    recommendation_result = {}
     try:
         if user_knowledge_graph_df is None:
             user_knowledge_graph_df = construct_knowledge_graph(texts)
@@ -64,7 +64,7 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
             recom_req_dict[key] = max(detail, key=lambda x: x[0])[1]
 
         #using cluster predictions from the dataset to take the recommendations
-        recommendations = []
+        recommendation_dict = {}
         for categ in recom_req_dict:
             doc = nlp(recom_req_dict[categ])
             vector = doc.vector
@@ -72,9 +72,12 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
             if len(membership_list) > 0:
                 cluster_id = membership_list[0]
                 recom = get_random_item_from_cluster(cluster_id, categ)
-                recommendations.append((categ, recom))
 
-        recommendation_result = recommendations
+                if categ not in recommendation_dict:
+                    recommendation_dict[categ] = []
+                recommendation_dict[categ].append(recom)
+
+        recommendation_result = recommendation_dict
 
     except Exception as e:
         print("Error occurred in the recommend_web_articles method: ", e, traceback.print_exc())
