@@ -29,16 +29,16 @@ def get_category_dataset(category, dataset_path=DATASET_PATH):
         result_df = df[df['Type'] == category]
         return result_df
 
-def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluster_model_dict, category=DEFAULT_CATEGORY):
+def get_cluster_model(category=DEFAULT_CATEGORY):
     global saved_cluster_model_dict
-    if category in cluster_model_dict:
-        return cluster_model_dict[category]
+    if category in saved_cluster_model_dict:
+        return saved_cluster_model_dict[category]
     category_cluster_path = category + CLUSTER_MODEL_PATH
     if exists(category_cluster_path):
         saved_cluster_model_dict[category] = pickle.load(open(category_cluster_path, "rb"))
         return saved_cluster_model_dict[category]
 
-    saved_cluster_model_dict[category] = create_cluster_model(dataset_path, category)
+    saved_cluster_model_dict[category] = create_cluster_model(category)
     return saved_cluster_model_dict[category]
 
 def create_cluster_model(category=DEFAULT_CATEGORY):
