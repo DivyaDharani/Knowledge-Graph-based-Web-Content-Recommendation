@@ -70,7 +70,8 @@ def get_cluster_elements(cluster_id, category):
 def get_random_item_from_cluster(cluster_id, category, number_of_samples=3):
     cluster_elements = get_cluster_elements(cluster_id, category)
     cluster_elements_entity = cluster_elements['Entity']
-    sample = cluster_elements_entity.sample(number_of_samples)
+    min_number_samples = min(number_of_samples, len(cluster_elements_entity.index))
+    sample = cluster_elements_entity.sample(min_number_samples)
     return sample.to_list()
 
 
