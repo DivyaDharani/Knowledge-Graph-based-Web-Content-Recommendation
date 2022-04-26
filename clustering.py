@@ -37,7 +37,7 @@ def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluste
         return cluster_model_dict[category]
     category_cluster_path = category + CLUSTER_MODEL_PATH
     if exists(category_cluster_path):
-        saved_cluster_model_dict[category] = pickle.load(open(CLUSTER_MODEL_PATH, "rb"))
+        saved_cluster_model_dict[category] = pickle.load(open(category_cluster_path, "rb"))
         return saved_cluster_model_dict[category]
 
     saved_cluster_model_dict[category] = create_cluster_model(dataset_path, category)
