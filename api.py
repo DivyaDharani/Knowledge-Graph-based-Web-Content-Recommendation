@@ -45,11 +45,10 @@ def get_recommendation():
     if request_data and 'request_links' in request_data:
         if (type(request_data['request_links']) == list) and (len(request_data['request_links']) > 0):
             links = request_data['request_links']
-            recommended_links = get_recommendations(links)
-            print(recommended_links)
-            recommendation_dict = {"recommended_links": recommended_links}
+            recommendations = get_recommendations(links)
+            print(recommendations)
 
-    return jsonify(recommendation_dict)
+    return jsonify(recommendations)
 
 
 app.run()
