@@ -8,7 +8,7 @@ nlp = spacy.load("en_core_web_lg")
 
 DATASET_PATH = 'final_dataset.csv'
 CLUSTER_MODEL_PATH = '_kmeans_model.pkl'
-NUM_CLUSTERS = 400
+MIN_NUM_CLUSTERS = 50
 DEFAULT_CATEGORY = 'All'
 
 saved_cluster_model_dict = {}
@@ -50,7 +50,8 @@ def create_cluster_model(dataset_path=DATASET_PATH, category=DEFAULT_CATEGORY):
     result = combine_entity_and_categories(df, category)
     docs = [nlp(text) for text in result]
     vectors = [doc.vector for doc in docs]
-    cluster_model = KMeans(n_clusters=NUM_CLUSTERS, random_state=0).fit(vectors)
+    no_clusters = min(MIN_NUM_CLUSTERS, len(result))
+    cluster_model = KMeans(n_clusters=no_clusters, random_state=0).fit(vectors)
     category_cluster_path = category + CLUSTER_MODEL_PATH
     pickle.dump(cluster_model, open(category_cluster_path, "wb"))
     return cluster_model
