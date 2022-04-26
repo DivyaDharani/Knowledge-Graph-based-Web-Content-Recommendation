@@ -23,13 +23,11 @@ def get_dataset(dataset_path=DATASET_PATH, dataset=saved_dataset):
 
 def get_category_dataset(category, dataset_path=DATASET_PATH):
     df = get_dataset(dataset_path)
-    result = []
     if category == DEFAULT_CATEGORY:
-        result = df['Entity'].to_list()
+        return df
     else:
         result_df = df[df['Type'] == category]
-        result = result_df['Entity'].to_list()
-    return result
+        return result_df
 
 def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluster_model_dict, category=DEFAULT_CATEGORY):
     global saved_cluster_model_dict
@@ -44,7 +42,8 @@ def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluste
     return saved_cluster_model_dict[category]
 
 def create_cluster_model(category=DEFAULT_CATEGORY):
-    result = get_category_dataset(category=category)
+    category_dataset = get_category_dataset(category=category)
+    result = category_dataset['Entity'].to_list()
     docs = [nlp(text) for text in result]
     vectors = [doc.vector for doc in docs]
     no_clusters = min(MIN_NUM_CLUSTERS, len(result))
@@ -70,11 +69,12 @@ def get_cluster_elements(cluster_id, category):
 
 def get_random_item_from_cluster(cluster_id, category):
     cluster_elements = get_cluster_elements(cluster_id, category)
-    return cluster_elements.sample()
+    cluster_elements_entity = cluster_elements['Entity']
+    return cluster_elements_entity.sample()
 
 
 if __name__ == '__main__':
-    create_cluster_model(DATASET_PATH, DEFAULT_CATEGORY)
+    create_cluster_model(DEFAULT_CATEGORY)
 
 
 #To do:
