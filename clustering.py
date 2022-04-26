@@ -43,7 +43,7 @@ def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluste
     saved_cluster_model_dict[category] = create_cluster_model(dataset_path, category)
     return saved_cluster_model_dict[category]
 
-def create_cluster_model(dataset_path=DATASET_PATH, category=DEFAULT_CATEGORY):
+def create_cluster_model(category=DEFAULT_CATEGORY):
     result = get_category_dataset(category=category)
     docs = [nlp(text) for text in result]
     vectors = [doc.vector for doc in docs]
