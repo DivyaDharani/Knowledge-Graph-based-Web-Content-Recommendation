@@ -67,10 +67,11 @@ def get_cluster_elements(cluster_id, category):
     result = dataset.loc[cluster_elements.data_index, :]
     return result
 
-def get_random_item_from_cluster(cluster_id, category):
+def get_random_item_from_cluster(cluster_id, category, number_of_samples=3):
     cluster_elements = get_cluster_elements(cluster_id, category)
     cluster_elements_entity = cluster_elements['Entity']
-    return cluster_elements_entity.sample()
+    sample = cluster_elements_entity.sample(number_of_samples)
+    return sample.to_list()
 
 
 if __name__ == '__main__':
