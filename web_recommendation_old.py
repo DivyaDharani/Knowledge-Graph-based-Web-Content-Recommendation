@@ -42,4 +42,8 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
 # "A mutual fund is a company that pools money from many investors and invests the money in securities such as stocks, bonds, and short-term debt.",
 # "Warren Edward Buffett is an American business magnate, investor, and philanthropist."]
 
-
+def get_recommendations(links):
+    texts = extract_text(links)
+    print(texts)
+    recommended_links = recommend_web_articles(texts)
+    return recommended_links

@@ -1,7 +1,7 @@
 import spacy
 from collections import Counter
 import traceback
-
+import pandas as pd
 
 #project module imports:
 from clustering import get_cluster_memberships, get_dataset
@@ -28,7 +28,8 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
                 if len(txt) > 0:
                     entities_joined.append(txt)
 
-        df = get_dataset()
+        #df = get_dataset()
+        df = pd.read_csv('final_dataset.csv')  #-------> COMMENT THIS LINE AND UNCOMMENT THE PREVIOUS LINE
         categories = list(df['Type'].unique())
 
         text_docs = [nlp(ents) for ents in entities_joined]
@@ -67,9 +68,3 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
         print("Error occurred in the recommend_web_articles method: ", e, traceback.print_exc())
 
     return recommendation_result
-
-def get_recommendations(links):
-    texts = extract_text(links)
-    print(texts)
-    recommended_links = recommend_web_articles(texts)
-    return recommended_links
