@@ -28,8 +28,7 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
                 if len(txt) > 0:
                     entities_joined.append(txt)
 
-        #df = get_dataset()
-        df = pd.read_csv('final_dataset.csv')  #-------> COMMENT THIS LINE AND UNCOMMENT THE PREVIOUS LINE
+        df = get_dataset()
         categories = list(df['Type'].unique())
 
         text_docs = [nlp(ents) for ents in entities_joined]
