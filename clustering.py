@@ -14,16 +14,21 @@ DEFAULT_CATEGORY = 'All'
 saved_cluster_model_dict = {}
 saved_dataset = None
 
-def combine_entity_and_categories(df, category):
-    '''lst = df[['Entity', 'Type']].values().tolist()
+def get_dataset(dataset_path=DATASET_PATH, dataset=saved_dataset):
+    if dataset is not None:
+        return dataset
+    global saved_dataset
+    saved_dataset = pd.read_csv(dataset_path)
+    return saved_dataset
 
-    for row in lst:
-        result.append(' '.join(row))'''
+def get_category_dataset(category, dataset_path=DATASET_PATH):
+    df = get_dataset(dataset_path)
     result = []
     if category == DEFAULT_CATEGORY:
         result = df['Entity'].to_list()
     else:
         result_df = df[df['Type'] == category]
+        result = result_df['Entity'].to_list()
     return result
 
 def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluster_model_dict, category=DEFAULT_CATEGORY):
@@ -38,16 +43,8 @@ def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluste
     saved_cluster_model_dict[category] = create_cluster_model(dataset_path, category)
     return saved_cluster_model_dict[category]
 
-def get_dataset(dataset_path=DATASET_PATH, dataset=saved_dataset):
-    if dataset is not None:
-        return dataset
-    global saved_dataset
-    saved_dataset = pd.read_csv(dataset_path)
-    return saved_dataset
-
 def create_cluster_model(dataset_path=DATASET_PATH, category=DEFAULT_CATEGORY):
-    df = get_dataset(dataset_path)
-    result = combine_entity_and_categories(df, category)
+    result = get_category_dataset(category=category)
     docs = [nlp(text) for text in result]
     vectors = [doc.vector for doc in docs]
     no_clusters = min(MIN_NUM_CLUSTERS, len(result))
@@ -61,9 +58,9 @@ def get_cluster_memberships(X_input, category):
     y_pred = model.predict(X_input)
     return y_pred
 
-def get_cluster_elements(cluster_id):
-    model = get_cluster_model()
-    dataset = get_dataset()
+def get_cluster_elements(cluster_id, category):
+    model = get_cluster_model(category=category)
+    dataset = get_category_dataset(category=category)
     cluster_map = pd.DataFrame()
     cluster_map['data_index'] = dataset.index.values
     cluster_map['cluster'] = model.labels_
@@ -71,8 +68,8 @@ def get_cluster_elements(cluster_id):
     result = dataset.loc[cluster_elements.data_index, :]
     return result
 
-def get_random_item_from_cluster(cluster_id):
-    cluster_elements = get_cluster_elements(cluster_id)
+def get_random_item_from_cluster(cluster_id, category):
+    cluster_elements = get_cluster_elements(cluster_id, category)
     return cluster_elements.sample()
 
 
