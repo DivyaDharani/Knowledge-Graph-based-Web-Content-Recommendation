@@ -1,7 +1,7 @@
 import flask
 from flask import jsonify, request
 from mining import get_keyword
-from web_recommendation import get_recommendations
+from main import get_recommendations
 app = flask.Flask(__name__)
 # app.config["DEBUG"] = True
 @app.route('/', methods=['GET'])
