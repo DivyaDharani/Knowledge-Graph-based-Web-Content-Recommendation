@@ -29,6 +29,7 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
                     entities_joined.append(txt)
 
         df = get_dataset()
+        #df = pd.read_csv('final_dataset.csv')
         categories = list(df['Type'].unique())
 
         text_docs = [nlp(ents) for ents in entities_joined]
@@ -60,6 +61,13 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
         for key in recom_req_dict:
             detail = recom_req_dict[key]
             recom_req_dict[key] = max(detail, key=lambda x: x[0])[1]
+
+        #using cluster predictions from the dataset to take the recommendations
+        docs = [nlp(recom_req_dict[categ]) for categ in recom_req_dict]
+        vectors = [doc.vector for doc in docs]
+        if len(vectors) > 0:
+            cluster_memberships = get_cluster_memberships(vectors)
+            print(cluster_memberships)
 
         recommendation_result = recom_req_dict
 
