@@ -1,71 +1,62 @@
 from os.path import exists
 import pickle
 import pandas as pd
-import wordninja
 import spacy
 from sklearn.cluster import KMeans
 
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_lg")
 
-DATASET_PATH = 'Read_The_Web_NELL.08m.1102_dataset.csv'
-CLUSTER_MODEL_PATH = 'kmeans_model.pkl'
-NUM_CLUSTERS = 50
+DATASET_PATH = 'final_dataset.csv'
+CLUSTER_MODEL_PATH = '_kmeans_model.pkl'
+NUM_CLUSTERS = 400
+DEFAULT_CATEGORY = 'All'
 
-saved_cluster_model = None
+saved_cluster_model_dict = {}
 saved_dataset = None
 
-def split_compound_word(word):
-    resList = wordninja.split(word)
-    word = ' '.join(resList)
-    return word
+def combine_entity_and_categories(df, category):
+    '''lst = df[['Entity', 'Type']].values().tolist()
 
-def split_value(df):
-    lst = []
-    for index, row in df.iterrows():
-        entity = split_compound_word(row['Entity'])
-        relation = split_compound_word(row['Relation'])
-        value = split_compound_word(row['Value'])
-        entry = [entity, relation, value]
-        lst.append(entry)
-    return lst
-
-def combine_entity_and_values(lst):
-    result = []
     for row in lst:
-        result.append(' '.join(row))
+        result.append(' '.join(row))'''
+    result = []
+    if category == DEFAULT_CATEGORY:
+        result = df['Entity'].to_list()
+    else:
+        result_df = df[df['Type'] == category]
     return result
 
-def get_cluster_model(dataset_path=DATASET_PATH, cluster_model=saved_cluster_model):
+def get_cluster_model(dataset_path=DATASET_PATH, cluster_model_dict=saved_cluster_model_dict, category=DEFAULT_CATEGORY):
+    global saved_cluster_model_dict
+    if category in cluster_model_dict:
+        return cluster_model_dict[category]
+    category_cluster_path = category + CLUSTER_MODEL_PATH
+    if exists(category_cluster_path):
+        saved_cluster_model_dict[category] = pickle.load(open(CLUSTER_MODEL_PATH, "rb"))
+        return saved_cluster_model_dict[category]
 
-    if cluster_model is not None:
-        return cluster_model
-    if exists(CLUSTER_MODEL_PATH):
-        saved_cluster_model = pickle.load(open(CLUSTER_MODEL_PATH, "rb"))
-        return saved_cluster_model
+    saved_cluster_model_dict[category] = create_cluster_model(dataset_path, category)
+    return saved_cluster_model_dict[category]
 
-    saved_cluster_model = create_cluster_model(dataset_path)
-    return saved_cluster_model
-
-def get_dataset(dataset_path=DATASET_PATH, dataset= saved_dataset):
+def get_dataset(dataset_path=DATASET_PATH, dataset=saved_dataset):
     if dataset is not None:
         return dataset
+    global saved_dataset
     saved_dataset = pd.read_csv(dataset_path)
-    saved_dataset = saved_dataset[saved_dataset.Relation != 'generalizations']
-    saved_dataset = saved_dataset[saved_dataset.Relation != 'haswikipediaurl']
     return saved_dataset
 
-def create_cluster_model(dataset_path = DATASET_PATH):
-    file = get_dataset(dataset_path)
-    lst = split_value(file)
-    result = combine_entity_and_values(lst)
+def create_cluster_model(dataset_path=DATASET_PATH, category=DEFAULT_CATEGORY):
+    df = get_dataset(dataset_path)
+    result = combine_entity_and_categories(df, category)
     docs = [nlp(text) for text in result]
     vectors = [doc.vector for doc in docs]
     cluster_model = KMeans(n_clusters=NUM_CLUSTERS, random_state=0).fit(vectors)
-    pickle.dump(cluster_model, open(CLUSTER_MODEL_PATH, "wb"))
+    category_cluster_path = category + CLUSTER_MODEL_PATH
+    pickle.dump(cluster_model, open(category_cluster_path, "wb"))
     return cluster_model
 
-def get_cluster_memberships(X_input):
-    model = get_cluster_model()
+def get_cluster_memberships(X_input, category):
+    model = get_cluster_model(category=category)
     y_pred = model.predict(X_input)
     return y_pred
 
@@ -85,7 +76,7 @@ def get_random_item_from_cluster(cluster_id):
 
 
 if __name__ == '__main__':
-    create_cluster_model(DATASET_PATH)
+    create_cluster_model(DATASET_PATH, DEFAULT_CATEGORY)
 
 
 #To do:

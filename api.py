@@ -51,4 +51,5 @@ def get_recommendation():
 
     return jsonify(recommendation_dict)
 
+
 app.run()
