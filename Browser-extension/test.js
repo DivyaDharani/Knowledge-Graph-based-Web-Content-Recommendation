@@ -1,18 +1,14 @@
 
-function onAnchorClick(event) {
-  chrome.tabs.create({
-    selected: true,
-    url: event.srcElement.href
-  });
-  return false;
-}
+let maxArrayLength = 20;
 
 // Given an array of URLs, build a DOM list of those URLs in the
 // browser action popup.
 function buildPopupDom(divName, data) {
+  maxArrayLength = data.length > maxArrayLength ? maxArrayLength : data.length;
+  data = data.slice(0,maxArrayLength);
   console.log(data);
   var links = data;
-  var request_json = {"request_links": links};
+  var request_json = { "request_links": links };
   const xhr = new XMLHttpRequest();
   const url = 'http://127.0.0.1:5000/recommendation';
   xhr.open("POST", url, true);
@@ -21,47 +17,42 @@ function buildPopupDom(divName, data) {
     value: request_json
   }));
 
-  xhr.onload = function() {
+  xhr.onload = function () {
     console.log(this.status);
     var data = JSON.parse(this.responseText);
     console.log(data);
-};
+    var response = data;
+    var mainContainer = document.getElementById("myData");
 
+    var ul = document.createElement('ul');
+    mainContainer.appendChild(ul);
+    for (var key in response) {
+      var result = key + ' : ' + response[key];
+      console.log(key);
+      console.log(response[key]);
+  
+      var li = document.createElement('li');
+      li.innerHTML = result;
+      ul.appendChild(li);
+    }
 
-  // var popupDiv = document.getElementById(divName);
+  };
+
+  // var response = { 'City': ['Isa Town', 'Dora', 'Tirat Carmel'], 'Board Game': ['Games played with Mahjong equipment', 'Tiger game', 'tafl games'], 'Building': ['Lindenstraße 62', 'Werderstraße 157', 'Südstraße 80 und 82'], 'Musical Work': ['Earth Dances', 'The Creation structure', 'Four Last Songs'], 'Anime': ['Jankenman', 'Nekomonogatari', 'Akū Daisakusen Srungle'] };
+
+  // // console.log(msg);
+  // var mainContainer = document.getElementById("myData");
 
   // var ul = document.createElement('ul');
-  // popupDiv.appendChild(ul);
-
-  // for (var i = 0, ie = data.length; i < ie; ++i) {
-  //   var a = document.createElement('a');
-  //   a.href = data[i];
-  //   const Http = new XMLHttpRequest();
-    
-  //   const url = 'http://127.0.0.1:5000/url?url=' + data[i];
-  //   Http.open("GET", url);
-  //   Http.send();
-
-  //   Http.onreadystatechange = (e) => {
-  //     // console.log(e);
-  //     var response = Http.responseText;
-  //     if (response && response.includes('description')) {
-  //       var val = JSON.parse(response);
-  //       if (val.description && val.description!='No meta url given') {
-  //         console.log(val);
-  //       }
-  //     }
-
-  //   }
-
-
-  //   a.appendChild(document.createTextNode(data[i]));
-  //   a.addEventListener('click', onAnchorClick);
+  // mainContainer.appendChild(ul);
+  // for (var key in response) {
+  //   var result = key + ' : ' + response[key];
+  //   console.log(key);
+  //   console.log(response[key]);
 
   //   var li = document.createElement('li');
-  //   li.appendChild(a);
-
-  //   // ul.appendChild(li);
+  //   li.innerHTML = result;
+  //   ul.appendChild(li);
   // }
 }
 
@@ -152,14 +143,17 @@ function buildTypedUrlList(divName) {
 
 // 1. Create the button
 var button = document.createElement("button");
-button.innerHTML = "Fetch User Data";
+button.innerHTML = "Fetch Recommendations";
 
 // 2. Append somewhere
 var body = document.getElementsByTagName("body")[0];
 body.appendChild(button);
 
 // 3. Add event handler
-button.addEventListener ("click", function() {
+button.addEventListener("click", function () {
   // alert("did something");
+  button.style.display = 'none';
   buildTypedUrlList("typedUrl_div");
 });
+
+
