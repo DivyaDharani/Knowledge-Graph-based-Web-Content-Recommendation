@@ -11,6 +11,7 @@ CORS(app, support_credentials=True)
 
 # app.config["DEBUG"] = True
 @app.route('/', methods=['GET'])
+@cross_origin()
 def home():
     message = """
     <h1>Data mining API </h1>
@@ -18,6 +19,7 @@ def home():
     """
     return message
 @app.route('/url', methods=['GET'])
+@cross_origin()
 def url():
     """
     Input data: url
@@ -44,6 +46,7 @@ def url():
 }
 """
 @app.route('/recommendation', methods=['POST'])
+@cross_origin()
 def get_recommendation():
     request_data = request.get_json()
     recommendations = {}

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from scrape_wiki import search_wiki
+import traceback
 
 """
 def get_keyword(url):
@@ -32,25 +33,30 @@ def get_keyword(url):
     return result"""
 
 def get_keyword(url):
-    # Check if wiki
-    if "wikipedia" in url:
-        wiki_result = search_wiki(url) if search_wiki(url) else "Wiki error"
-        return wiki_result
-    # Check the schema
-    if "https://" not in url and "http://" not in url:
-        url = "https://" + url
-    # Start the request
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    description = soup.find("meta", property="og:description")
-    description = description["content"] if description else "No meta url given"
-    # Get the p tag
-    h1_tag = soup.find("h1")
-    if h1_tag is not None:
-        h1_tag = h1_tag.text
-    # Construct result
-    result = description if description else h1_tag
-    #print(result)
+    print(url)
+    result = None
+    try:
+        # Check if wiki
+        if "wikipedia" in url:
+            wiki_result = search_wiki(url) if search_wiki(url) else "Wiki error"
+            return wiki_result
+        # Check the schema
+        if "https://" not in url and "http://" not in url:
+            url = "https://" + url
+        # Start the request
+        r = requests.get(url)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        description = soup.find("meta", property="og:description")
+        description = description["content"] if description else "No meta url given"
+        # Get the p tag
+        h1_tag = soup.find("h1")
+        if h1_tag is not None:
+            h1_tag = h1_tag.text
+        # Construct result
+        result = description if description else h1_tag
+        #print(result)
+    except Exception as e:
+        print("Error occurred while processing URL: ", url, e, traceback.print_exc())
     return result
 
 
