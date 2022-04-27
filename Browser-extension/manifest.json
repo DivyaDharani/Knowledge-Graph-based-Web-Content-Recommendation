@@ -1,0 +1,12 @@
+{
+    "name": "URL History",
+    "version": "1.2",
+    "description": "Reads your history",
+    "permissions": [
+      "history"
+    ],
+    "action": {
+      "default_popup": "test.html"
+    },
+    "manifest_version": 3
+  }

@@ -50,7 +50,7 @@ def get_keyword(url):
         h1_tag = h1_tag.text
     # Construct result
     result = description if description else h1_tag
-    print(result)
+    #print(result)
     return result
 
 

@@ -12,3 +12,5 @@ pip install neuralcoref
 
 pip install wordninja
 
+pip install flask flask-cors
+

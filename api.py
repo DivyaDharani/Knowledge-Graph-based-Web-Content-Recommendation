@@ -2,7 +2,13 @@ import flask
 from flask import jsonify, request
 from mining import get_keyword
 from main import get_recommendations
+
+from flask_cors import CORS, cross_origin
+
 app = flask.Flask(__name__)
+CORS(app, support_credentials=True)
+
+
 # app.config["DEBUG"] = True
 @app.route('/', methods=['GET'])
 def home():
@@ -40,11 +46,11 @@ def url():
 @app.route('/recommendation', methods=['POST'])
 def get_recommendation():
     request_data = request.get_json()
-    recommendation_dict ={}
+    recommendations = {}
     print(request_data)
-    if request_data and 'request_links' in request_data:
-        if (type(request_data['request_links']) == list) and (len(request_data['request_links']) > 0):
-            links = request_data['request_links']
+    if request_data and 'value' in request_data and 'request_links' in request_data['value']:
+        if (type(request_data['value']['request_links']) == list) and (len(request_data['value']['request_links']) > 0):
+            links = request_data['value']['request_links']
             recommendations = get_recommendations(links)
             print(recommendations)
 

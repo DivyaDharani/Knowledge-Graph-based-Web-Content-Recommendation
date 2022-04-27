@@ -9,7 +9,7 @@ import nlp_tasks as mynlp
 
 nlp = spacy.load("en_core_web_lg")
 
-#TOP_CATEG_COUNT = 3
+TOP_CATEG_COUNT = 5
 
 def recommend_web_articles(texts, user_knowledge_graph_df = None):
     recommendation_result = {}
@@ -46,8 +46,8 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
         counts = Counter(max_score_categories)
         count_tuples = list(counts.items())
         sorted_count_tuples = sorted(count_tuples, key=lambda x: x[1], reverse=True)
-        #categories_to_recommend = [tup[0] for tup in sorted_count_tuples[:TOP_CATEG_COUNT]]
-        categories_to_recommend = [tup[0] for tup in sorted_count_tuples[:]]
+        categories_to_recommend = [tup[0] for tup in sorted_count_tuples[:TOP_CATEG_COUNT]]
+        #categories_to_recommend = [tup[0] for tup in sorted_count_tuples[:]]
 
         # taking the max score text from each category to be recommended
         recom_req_dict = {}
@@ -72,10 +72,7 @@ def recommend_web_articles(texts, user_knowledge_graph_df = None):
             if len(membership_list) > 0:
                 cluster_id = membership_list[0]
                 recom = get_random_item_from_cluster(cluster_id, categ)
-
-                if categ not in recommendation_dict:
-                    recommendation_dict[categ] = []
-                recommendation_dict[categ].append(recom)
+                recommendation_dict[categ] = recom
 
         recommendation_result = recommendation_dict
 
