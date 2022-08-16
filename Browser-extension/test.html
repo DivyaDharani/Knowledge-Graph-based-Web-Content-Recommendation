@@ -1,21 +1,67 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
   <head>
     <link href="test.css" rel="stylesheet" />
-    <title>Recentl URLs</title>
+    <title>Social Browser Extension</title>
     <p id="demo"></p>
     <style>
-      body {min-width: 250px;}
+      body {
+        min-width: 400px;
+      }
     </style>
-    <script src='test.js'></script>
-  </head>
-
-  <body>
-    <!-- <h2>Recommended URL's:</h2> -->
-    <div id="myData"></div>
-    <!-- <button onclick="myFunction()">Click me</button> -->
-
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
     <link href="test.css" rel="stylesheet" />
-  <!-- <script src='test.js'></script> -->
-</body>
+  </head>
+  <body>
+    <div class="header-text">CSE 573: SWM Group 28</div>
+    <div class="header-text">Social Browser Extension</div>
+    <button class="btn-2" id="recommendationBtn">Fetch User Recommendation</button>
+    <div id="spinner" class="loader"></div>
+    <div id="myData" class="text-2"></div>
+    <button class="btn-2" id="feedbackBtn">Click for FeedBack</button>
+
+    <div id="container" class="container">
+      <div class="post">
+        <div class="text">Thanks for the feedback!</div>
+        <!-- <div class="edit">EDIT</div> -->
+      </div>
+      <div id="recommendation" class="text">Please rate the recommendation</div>
+      <div class="star-widget">
+        <input type="radio" name="rate" id="rate-5" />
+        <label for="rate-5" class="fas fa-star"></label>
+        <input type="radio" name="rate" id="rate-4" />
+        <label for="rate-4" class="fas fa-star"></label>
+        <input type="radio" name="rate" id="rate-3" />
+        <label for="rate-3" class="fas fa-star"></label>
+        <input type="radio" name="rate" id="rate-2" />
+        <label for="rate-2" class="fas fa-star"></label>
+        <input type="radio" name="rate" id="rate-1" />
+        <label for="rate-1" class="fas fa-star"></label>
+        <!-- <form action="#"> -->
+          <header></header>
+          <div style="height:50px" class="textarea">
+            <textarea
+              id="name"
+              placeholder="Name"
+            ></textarea>
+          </div>
+          <div class="textarea">
+            <textarea
+              id="myTextarea"
+              cols="30"
+              placeholder="Describe your experience.."
+            ></textarea>
+          </div>
+          <div class="btn">
+            <button id="submit" type="submit">Post</button>
+          </div>
+        <!-- </form> -->
+      </div>
+    </div>
+    <script src="test.js"></script>
+  </body>
 </html>

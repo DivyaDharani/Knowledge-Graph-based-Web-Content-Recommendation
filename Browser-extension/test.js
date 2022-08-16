@@ -5,7 +5,7 @@ let maxArrayLength = 20;
 // browser action popup.
 function buildPopupDom(divName, data) {
   maxArrayLength = data.length > maxArrayLength ? maxArrayLength : data.length;
-  data = data.slice(0,maxArrayLength);
+  data = data.slice(0, maxArrayLength);
   console.log(data);
   var links = data;
   var request_json = { "request_links": links };
@@ -18,6 +18,7 @@ function buildPopupDom(divName, data) {
   }));
 
   xhr.onload = function () {
+    spinner.style.display = "none";
     console.log(this.status);
     var data = JSON.parse(this.responseText);
     console.log(data);
@@ -30,14 +31,14 @@ function buildPopupDom(divName, data) {
       var result = key + ' : ' + response[key];
       console.log(key);
       console.log(response[key]);
-  
+
       var li = document.createElement('li');
       li.innerHTML = result;
       ul.appendChild(li);
     }
-
+    feedbackBtn.style.display = "block";
   };
-
+  // spinner.style.display = "none";
   // var response = { 'City': ['Isa Town', 'Dora', 'Tirat Carmel'], 'Board Game': ['Games played with Mahjong equipment', 'Tiger game', 'tafl games'], 'Building': ['Lindenstraße 62', 'Werderstraße 157', 'Südstraße 80 und 82'], 'Musical Work': ['Earth Dances', 'The Creation structure', 'Four Last Songs'], 'Anime': ['Jankenman', 'Nekomonogatari', 'Akū Daisakusen Srungle'] };
 
   // // console.log(msg);
@@ -54,6 +55,7 @@ function buildPopupDom(divName, data) {
   //   li.innerHTML = result;
   //   ul.appendChild(li);
   // }
+  // feedbackBtn.style.display = "block";
 }
 
 // Search history to find up to ten links that a user has typed in,
@@ -137,23 +139,80 @@ function buildTypedUrlList(divName) {
   };
 }
 
-// document.addEventListener('DOMContentLoaded', function () {
-//   buildTypedUrlList("typedUrl_div");
-// });
 
-// 1. Create the button
-var button = document.createElement("button");
-button.innerHTML = "Fetch Recommendations";
+// const btn = document.querySelector("button");
+const post = document.querySelector(".post");
+const widget = document.querySelector(".star-widget");
+const recommendation = document.getElementById("recommendation");
 
-// 2. Append somewhere
-var body = document.getElementsByTagName("body")[0];
-body.appendChild(button);
+const recommendationBtn = document.getElementById("recommendationBtn");
+recommendationBtn.addEventListener("click", showResult);
 
-// 3. Add event handler
-button.addEventListener("click", function () {
-  // alert("did something");
-  button.style.display = 'none';
+const feedbackBtn = document.getElementById("feedbackBtn");
+feedbackBtn.addEventListener("click", showFeedBack);
+
+const result = document.getElementById("submit");
+result.addEventListener("click", functionStoreResult);
+
+const resultData = document.getElementById("myData");
+const feedback = document.getElementById("container");
+
+const spinner = document.getElementById("spinner");
+
+spinner.style.display = "none";
+feedback.style.display = "none";
+feedbackBtn.style.display = "none";
+
+function showResult() {
+  recommendationBtn.style.display = 'none';
+  spinner.style.display = "block";
+  // feedbackBtn.style.display = "block";
   buildTypedUrlList("typedUrl_div");
-});
+}
+
+function showFeedBack() {
+  spinner.style.display = "none";
+  feedbackBtn.style.display = "none";
+  feedback.style.display = "block";
+  resultData.style.display = "none";
+}
+
+function functionStoreResult() {
+  var rating = 0;
+  if (document.getElementById("rate-5").checked) {
+    rating = 5;
+  } else if (document.getElementById("rate-4").checked) {
+    rating = 4;
+  } else if (document.getElementById("rate-3").checked) {
+    rating = 3;
+  } else if (document.getElementById("rate-2").checked) {
+    rating = 2;
+  } else if (document.getElementById("rate-1").checked) {
+    rating = 1;
+  }
+
+  console.log(document.getElementById("name").value);
+  console.log(document.getElementById("myTextarea").value);
+  console.log(rating);
+  sendFeedback(document.getElementById("name").value, document.getElementById("myTextarea").value, rating);
+  widget.style.display = "none";
+  post.style.display = "block";
+  recommendation.style.display = "none";
+
+}
 
 
+function sendFeedback(name, description, rating) {
+  var request_json = {
+    name: name,
+    description: description,
+    rating: rating
+  };
+  fetch("http://localhost:3000/feedback", {
+    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(request_json)
+  }).then(res => {
+    console.log("Request complete! response:", res);
+  });
+}

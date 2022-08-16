@@ -1,7 +1,7 @@
 {
-    "name": "URL History",
+    "name": "Social Browser Extension",
     "version": "1.2",
-    "description": "Reads your history",
+    "description": "To extract URLs from the user’s browsing history and recommend content and keywords based on the knowledge graph ",
     "permissions": [
       "history"
     ],
